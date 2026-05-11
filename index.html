@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBOX - Szervezeti Hierarchia</title>
+    <style>
+        :root {
+            --bbox-blue: #007bff;
+            --bbox-green: #27ae60;
+            --bbox-purple: #6c5ce7;
+            --bbox-orange: #f39c12;
+            --bbox-dark: #2d3436;
+            --probation-red: #e74c3c;
+            --line-color: #ced4da;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #f8f9fa;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: auto; transition: 0.3s ease;
+        }
+
+        body.dark-mode { background: #111827; color: #f3f4f6; --card-bg: #1f2937; --line-color: #444; }
+        body.dark-mode .header-section { background: #1f2937; border-bottom: 1px solid #333; }
+        body.dark-mode .node:not(.top-leader):not(.ceo) { background: var(--card-bg); color: white; border: 1px solid rgba(255,255,255,0.06); }
+        body.dark-mode .node b { color: white; }
+        body.dark-mode .node span { color: #d1d5db; border-top: 1px solid rgba(255,255,255,0.08); }
+
+        .header-section {
+            background: white; width: 100%; padding: 20px 0;
+            display: flex; flex-direction: column; align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 1000;
+        }
+
+        .logo-image { height: 90px; margin-bottom: 15px; object-fit: contain; }
+        #nameSearch { width: 100%; max-width: 400px; padding: 10px 20px; border-radius: 30px; border: 2px solid #eee; outline: none; background: #f1f2f6; }
+
+        .org-container { padding: 60px 40px; display: flex; flex-direction: column; align-items: center; min-width: 3200px; position: relative; cursor: grab; }
+        #org-lines-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+        .pillars-wrapper { display: flex; justify-content: center; gap: 40px; margin-top: 80px; position: relative; z-index: 2; }
+        .pillar { display: flex; flex-direction: column; align-items: center; position: relative; }
+
+        .node {
+            background: white; border-radius: 12px; padding: 12px; width: 200px; text-align: center;
+            margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.03); position: relative; z-index: 2;
+            transition: transform 0.2s; cursor: grab; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .node.dragging { opacity: 0.4; transform: scale(0.95); }
+
+        .node b { display: block; font-size: 0.95em; font-weight: 700; color: var(--bbox-dark); margin-bottom: 3px; pointer-events: none; }
+        .node span { display: block; font-size: 0.75em; color: #7f8c8d; border-top: 1px solid #f8f9fa; padding-top: 4px; pointer-events: none; }
+
+        /* FELSŐVEZETŐK */
+        .ceo { background: linear-gradient(135deg, #5d4037 0%, #2b1d19 100%); color: white !important; width: 240px; }
+        .ceo b, .ceo span { color: white !important; border-top-color: rgba(255,255,255,0.2) !important; }
+        .top-leader { color: white !important; box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
+        .top-leader b, .top-leader span { color: white !important; border-top-color: rgba(255,255,255,0.2) !important; }
+
+        .pillar-dollak .top-leader { background: linear-gradient(135deg, var(--bbox-green) 0%, #1b5e20 100%); }
+        .pillar-fabri .top-leader { background: linear-gradient(135deg, var(--bbox-orange) 0%, #e65100 100%); }
+        .pillar-szabo .top-leader { background: linear-gradient(135deg, var(--bbox-purple) 0%, #4527a0 100%); }
+
+        /* KÖZÉPVEZETŐK (RÉSZLEGVEZETŐK) */
+        .mid-leader { border-width: 2px !important; box-shadow: 0 6px 12px rgba(0,0,0,0.1) !important; transform: scale(1.02); }
+        #col-raktar .mid-leader { border-color: var(--bbox-orange) !important; background: rgba(243, 156, 18, 0.05); }
+        #col-szerviz .mid-leader { border-color: #3498db !important; background: rgba(52, 152, 219, 0.05); }
+        #col-rfm .mid-leader { border-color: #9b59b6 !important; background: rgba(155, 89, 182, 0.05); }
+        #col-integracio .mid-leader { border-color: #2ecc71 !important; background: rgba(46, 204, 113, 0.05); }
+        #col-support .mid-leader { border-color: var(--bbox-blue) !important; background: rgba(0, 123, 255, 0.05); }
+
+        .pillar-dollak .node:not(.top-leader):not(.mid-leader) { border-bottom: 4px solid var(--bbox-green); }
+        .pillar-fabri .node:not(.top-leader):not(.mid-leader) { border-bottom: 4px solid var(--bbox-orange); }
+        .pillar-szabo .node:not(.top-leader):not(.mid-leader) { border-bottom: 4px solid var(--bbox-purple); }
+        .probation { border-left: 6px solid var(--probation-red) !important; }
+
+        .drag-over { background: rgba(0, 123, 255, 0.1) !important; outline: 2px dashed var(--bbox-blue); border-radius: 10px; }
+
+        .dollak-tree { display: flex; justify-content: center; gap: 20px; margin-top: 80px; position: relative; }
+        .sub-column { display: flex; flex-direction: column; align-items: center; position: relative; min-height: 150px; }
+        .dev-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; background: rgba(108, 92, 231, 0.03); padding: 15px; border-radius: 12px; margin-top: 80px; }
+
+        .section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+        .node.highlight { transform: scale(1.05); border: 2px solid var(--bbox-blue); z-index: 10; box-shadow: 0 0 15px rgba(0,123,255,0.3); }
+        .node.fade { opacity: 0.1; filter: blur(1px); }
+    </style>
+</head>
+<body>
+
+    <div class="header-section">
+        <img src="letöltés.jpg" alt="BBOX Logo" class="logo-image">
+        <input type="text" id="nameSearch" placeholder="Keresés...">
+        <button onclick="document.body.classList.toggle('dark-mode'); setTimeout(drawAllLines, 100);" style="margin-top:10px; cursor:pointer;">🌓 Dark Mode</button>
+    </div>
+
+    <div class="org-container" id="mainContainer">
+        <svg id="org-lines-svg"></svg>
+        <div class="node ceo" id="ceo-card" draggable="true"><b>Hódosi Norbert Sándor</b><span>Ügyvezető</span></div>
+
+        <div class="pillars-wrapper">
+            <div class="pillar pillar-dollak">
+                <div class="node top-leader" id="dollak-leader" draggable="true"><b>Dollák László</b><span>Gyártásvezető</span></div>
+                <div class="dollak-tree">
+                    <div class="sub-column" data-drop="true" id="col-raktar">
+                        <div class="section-label" style="color:var(--bbox-orange)">Raktár</div>
+                        <div class="node mid-leader" draggable="true"><b>Somlói Tamás</b><span>Anyag beszerző</span></div>
+                        <div class="node" draggable="true"><b>Kósa Attila</b><span>Raktáros</span></div>
+                        <div class="node" draggable="true"><b>Szilágyi Norbert</b><span>Raktáros</span></div>
+                    </div>
+                    <div class="sub-column" data-drop="true" id="col-szerviz">
+                        <div class="section-label" style="color:#3498db">Szerviz</div>
+                        <div class="node mid-leader" draggable="true"><b>Schaller Tamás</b><span>Szerviz műszaki vezető</span></div>
+                        <div class="node" draggable="true"><b>Kádár József</b><span>Szerviz mérnök</span></div>
+                        <div class="node" draggable="true"><b>Babik Olivér</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Kovács Péter Sándor</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Boldog László Attila</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Balog Balázs Zoltán</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Peszteritz Dániel</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Dömök Krisztián</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Lapp Krisztián</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Sörös Richárd</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Szőcs József</b><span>IT Szerviz-technikus</span></div>
+                    </div>
+                    <div class="sub-column" data-drop="true" id="col-rfm">
+                        <div class="section-label" style="color:#9b59b6">RFM</div>
+                        <div class="node mid-leader" draggable="true"><b>Pamuki Zsolt</b><span>RFM vezető</span></div>
+                        <div class="node" draggable="true"><b>Losó László</b><span>RFM programozó</span></div>
+                        <div class="node" draggable="true"><b>Kiszely György</b><span>RFM programozó</span></div>
+                        <div class="node" draggable="true"><b>Kovács Levente</b><span>RFM programozó</span></div>
+                    </div>
+                    <div class="sub-column" data-drop="true" id="col-integracio">
+                        <div class="section-label" style="color:#2ecc71">Integráció</div>
+                        <div class="node mid-leader" draggable="true"><b>Elmajer Donát</b><span>Integrátor vezető</span></div>
+                        <div class="node" draggable="true"><b>Szántai Attila</b><span>Integrátor</span></div>
+                        <div class="node" draggable="true"><b>Kovács Dávid</b><span>Rendszerintegrátor</span></div>
+                    </div>
+                    <div class="sub-column" data-drop="true" id="col-support">
+                        <div class="section-label" style="color:var(--bbox-blue)">Support</div>
+                        <div class="node mid-leader" draggable="true"><b>Bende Márk</b><span>HelpDesk vezető</span></div>
+                        <div class="node" draggable="true"><b>Karda Milán</b><span>IT helpdesk</span></div>
+                        <div class="node" draggable="true"><b>Habony Tamás</b><span>IT Helpdesk</span></div>
+                        <div class="node" draggable="true"><b>Huszti Ákos</b><span>IT Helpdesk</span></div>
+                        <div class="node" draggable="true"><b>Rományik Balázs</b><span>IT Helpdesk</span></div>
+                        <div class="node" draggable="true"><b>Vécsei András</b><span>IT Helpdesk</span></div>
+                        <div class="node" draggable="true"><b>Geri Péter</b><span>IT Helpdesk</span></div>
+                        <div class="node" draggable="true"><b>Séra Máté</b><span>IT Helpdesk</span></div>
+                        <div class="node" draggable="true"><b>Pemmer Ferenc</b><span>IT Helpdesk</span></div>
+                        <div class="node probation" draggable="true"><b>Nyíri István</b><span>IT Helpdesk</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pillar pillar-fabri">
+                <div class="node top-leader" id="fabri-leader" draggable="true"><b>Fábri Olga</b><span>Gazdasági vezető</span></div>
+                <div class="sub-column" data-drop="true" id="col-gazdasag" style="margin-top:45px">
+                    <div class="node" draggable="true"><b>Czita Emőke</b><span>Pénzügyi adminisztrátor</span></div>
+                    <div class="node" draggable="true"><b>Sallai Márta</b><span>Irodavezető</span></div>
+                </div>
+            </div>
+
+            <div class="pillar pillar-szabo">
+                <div class="node top-leader" id="szabo-leader" draggable="true"><b>Szabó Attila</b><span>Fejlesztési vezető</span></div>
+                <div class="dev-grid" data-drop="true" id="col-dev">
+                    <div class="node" draggable="true"><b>Illés Zsolt</b><span>Számítás technikai fejlesztő</span></div>
+                    <div class="node" draggable="true"><b>Cseszkó Martin</b><span>IT Support</span></div>
+                    <div class="node" draggable="true"><b>Szabó Gábor K.</b><span>IT Support</span></div>
+                    <div class="node" draggable="true"><b>Szoszin Rudolf A.</b><span>Projektmanedzser</span></div>
+                    <div class="node" draggable="true"><b>Csorba Géza M.</b><span>Fejlesztő</span></div>
+                    <div class="node" draggable="true"><b>Koza Károly Zoltán</b><span>Architekt</span></div>
+                    <div class="node" draggable="true"><b>Bodonyi Gábor</b><span>Fejlesztő</span></div>
+                    <div class="node probation" draggable="true"><b>Czétényi Benjamin</b><span>Szoftverfejlesztő</span></div>
+                    <div class="node probation" draggable="true"><b>Rácz Zoltán V.</b><span>AI fejlesztő</span></div>
+                    <div class="node probation" draggable="true"><b>Sztefanov Ádám</b><span>Android fejlesztő</span></div>
+                    <div class="node" draggable="true"><b>Gudman Roland</b><span>Rendszergazda</span></div>
+                    <div class="node probation" draggable="true"><b>Gazdag Zsombor</b><span>Full Stack</span></div>
+                    <div class="node probation" draggable="true"><b>Gyarmati Dénes</b><span>Full Stack</span></div>
+                    <div class="node probation" draggable="true"><b>Kovács János Z.</b><span>Full Stack</span></div>
+                    <div class="node probation" draggable="true"><b>Tóth Richárd</b><span>Full Stack</span></div>
+                    <div class="node probation" draggable="true"><b>Farkas Gábor</b><span>Full Stack</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const svg = document.getElementById('org-lines-svg');
+        const container = document.getElementById('mainContainer');
+
+        function drawAllLines() {
+            svg.innerHTML = '';
+            svg.setAttribute('width', container.scrollWidth);
+            svg.setAttribute('height', container.scrollHeight);
+            const color = getComputedStyle(document.body).getPropertyValue('--line-color');
+
+            const ceo = document.getElementById('ceo-card');
+            const leaders = [document.getElementById('dollak-leader'), document.getElementById('fabri-leader'), document.getElementById('szabo-leader')];
+
+            const ceoX = getX(ceo), ceoY = getYBottom(ceo), midY = ceoY + 30;
+            leaders.forEach(leader => {
+                const lx = getX(leader), ly = getYTop(leader);
+                drawLine(ceoX, ceoY, ceoX, midY, color); drawLine(ceoX, midY, lx, midY, color); drawLine(lx, midY, lx, ly, color);
+            });
+
+            const dollakLeader = document.getElementById('dollak-leader'), dx = getX(dollakLeader), dy = getYBottom(dollakLeader), dMidY = dy + 30;
+            document.querySelectorAll('.dollak-tree .sub-column').forEach(col => {
+                const firstNode = col.querySelector('.node');
+                if(firstNode) {
+                    const fx = getX(firstNode), fy = getYTop(firstNode);
+                    drawLine(dx, dy, dx, dMidY, color); drawLine(dx, dMidY, fx, dMidY, color); drawLine(fx, dMidY, fx, fy, color);
+                }
+            });
+
+            const fabriLeader = document.getElementById('fabri-leader'), gazdasagFirst = document.querySelector('#col-gazdasag .node');
+            if(gazdasagFirst) drawLine(getX(fabriLeader), getYBottom(fabriLeader), getX(gazdasagFirst), getYTop(gazdasagFirst), color);
+
+            const szaboLeader = document.getElementById('szabo-leader'), sx = getX(szaboLeader), sy = getYBottom(szaboLeader), sMidY = sy + 30;
+            const devNodes = document.querySelectorAll('#col-dev .node');
+            if (devNodes.length > 0) {
+                const leftX = getX(devNodes[0]), rightX = getX(devNodes[1]);
+                drawLine(sx, sy, sx, sMidY, color); drawLine(leftX, sMidY, rightX, sMidY, color);
+                drawLine(leftX, sMidY, leftX, getYTop(devNodes[0]), color); drawLine(rightX, sMidY, rightX, getYTop(devNodes[1]), color);
+            }
+        }
+
+        function getX(el) { const rect = el.getBoundingClientRect(), cRect = container.getBoundingClientRect(); return rect.left + rect.width / 2 - cRect.left + container.scrollLeft; }
+        function getYTop(el) { const rect = el.getBoundingClientRect(), cRect = container.getBoundingClientRect(); return rect.top - cRect.top + container.scrollTop; }
+        function getYBottom(el) { const rect = el.getBoundingClientRect(), cRect = container.getBoundingClientRect(); return rect.bottom - cRect.top + container.scrollTop; }
+        function drawLine(x1, y1, x2, y2, color) { const line = document.createElementNS("http://www.w3.org/2000/svg", "line"); line.setAttribute("x1", x1); line.setAttribute("y1", y1); line.setAttribute("x2", x2); line.setAttribute("y2", y2); line.setAttribute("stroke", color); line.setAttribute("stroke-width", "2"); svg.appendChild(line); }
+
+        // DRAG & DROP
+        const draggables = document.querySelectorAll('.node');
+        const dropZones = document.querySelectorAll('[data-drop="true"]');
+
+        draggables.forEach(d => {
+            d.addEventListener('dragstart', () => d.classList.add('dragging'));
+            d.addEventListener('dragend', () => { d.classList.remove('dragging'); setTimeout(drawAllLines, 50); });
+        });
+
+        dropZones.forEach(zone => {
+            zone.addEventListener('dragover', e => {
+                e.preventDefault();
+                const dragging = document.querySelector('.dragging');
+                const afterElement = [...zone.querySelectorAll('.node:not(.dragging)')].reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = e.clientY - box.top - box.height / 2;
+                    return (offset < 0 && offset > closest.offset) ? { offset, element: child } : closest;
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+                if (!afterElement) zone.appendChild(dragging); else zone.insertBefore(dragging, afterElement);
+                drawAllLines();
+            });
+            zone.addEventListener('dragenter', () => zone.classList.add('drag-over'));
+            zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+            zone.addEventListener('drop', () => zone.classList.remove('drag-over'));
+        });
+
+        // KERESÉS
+        document.getElementById('nameSearch').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('.node').forEach(node => {
+                if (term.length < 2) { node.classList.remove('fade', 'highlight'); return; }
+                const match = node.innerText.toLowerCase().includes(term);
+                node.classList.toggle('highlight', match); node.classList.toggle('fade', !match);
+            });
+        });
+
+        window.addEventListener('load', drawAllLines);
+        window.addEventListener('resize', drawAllLines);
+
+        let isDown = false, startX, startY, scrollLeft, scrollTop;
+        container.addEventListener('mousedown', (e) => { if(e.target.closest('.node')) return; isDown = true; container.style.cursor = 'grabbing'; startX = e.pageX - container.offsetLeft; startY = e.pageY - container.offsetTop; scrollLeft = window.scrollX; scrollTop = window.scrollY; });
+        window.addEventListener('mouseup', () => { isDown = false; container.style.cursor = 'grab'; });
+        window.addEventListener('mousemove', (e) => { if (!isDown) return; window.scrollTo(scrollLeft - (e.pageX - container.offsetLeft - startX) * 1.5, scrollTop - (e.pageY - container.offsetTop - startY) * 1.5); });
+    </script>
+</body>
+</html>
