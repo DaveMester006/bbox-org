@@ -1,0 +1,167 @@
+:root {
+    --bbox-blue: #007bff;
+    --bbox-green: #27ae60;
+    --bbox-purple: #6c5ce7;
+    --bbox-orange: #f39c12;
+    --bbox-dark: #2d3436;
+    --probation-red: #e74c3c;
+    --line-color: #ced4da;
+    --card-bg: #ffffff;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: #f8f9fa;
+    margin: 0; padding: 0;
+    display: flex; flex-direction: column; align-items: center;
+    overflow-x: auto; transition: 0.3s ease;
+}
+
+/* Dark Mode stílusok */
+body.dark-mode { 
+    background: #111827; 
+    color: #f3f4f6; 
+    --card-bg: #1f2937; 
+    --line-color: #444; 
+}
+body.dark-mode .header-section { background: #1f2937; border-bottom: 1px solid #333; }
+body.dark-mode .node:not(.top-leader):not(.ceo) { background: var(--card-bg); color: white; border: 1px solid rgba(255,255,255,0.06); }
+body.dark-mode .node b { color: white; }
+body.dark-mode .node span { color: #d1d5db; border-top: 1px solid rgba(255,255,255,0.08); }
+
+.header-section {
+    background: white; width: 100%; padding: 20px 0;
+    display: flex; flex-direction: column; align-items: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 1000;
+}
+
+.logo-image { height: 90px; margin-bottom: 15px; object-fit: contain; }
+#nameSearch { width: 100%; max-width: 400px; padding: 10px 20px; border-radius: 30px; border: 2px solid #eee; outline: none; background: #f1f2f6; }
+
+.org-container { padding: 60px 40px; display: flex; flex-direction: column; align-items: center; min-width: 3200px; position: relative; cursor: grab; }
+#org-lines-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+.pillars-wrapper { display: flex; justify-content: center; gap: 40px; margin-top: 80px; position: relative; z-index: 2; }
+.pillar { display: flex; flex-direction: column; align-items: center; position: relative; }
+
+.node {
+    background: white; border-radius: 12px; padding: 12px; width: 200px; text-align: center;
+    margin-bottom: 20px; border: 1px solid rgba(0,0,0,0.03); position: relative; z-index: 2;
+    transition: transform 0.2s; cursor: grab; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.node.dragging { opacity: 0.4; transform: scale(0.95); }
+
+.node b { display: block; font-size: 0.95em; font-weight: 700; color: var(--bbox-dark); margin-bottom: 3px; pointer-events: none; }
+.node span { display: block; font-size: 0.75em; color: #7f8c8d; border-top: 1px solid #f8f9fa; padding-top: 4px; pointer-events: none; }
+
+/* FELSŐVEZETŐK */
+.ceo { background: linear-gradient(135deg, #5d4037 0%, #2b1d19 100%); color: white !important; width: 240px; }
+.ceo b, .ceo span { color: white !important; border-top-color: rgba(255,255,255,0.2) !important; }
+.top-leader { color: white !important; box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
+.top-leader b, .top-leader span { color: white !important; border-top-color: rgba(255,255,255,0.2) !important; }
+
+.pillar-dollak .top-leader { background: linear-gradient(135deg, var(--bbox-green) 0%, #1b5e20 100%); }
+.pillar-fabri .top-leader { background: linear-gradient(135deg, var(--bbox-orange) 0%, #e65100 100%); }
+.pillar-szabo .top-leader { background: linear-gradient(135deg, var(--bbox-purple) 0%, #4527a0 100%); }
+
+/* KÖZÉPVEZETŐK */
+.mid-leader { border-width: 2px !important; box-shadow: 0 6px 12px rgba(0,0,0,0.1) !important; transform: scale(1.02); }
+#col-raktar .mid-leader { border-color: var(--bbox-orange) !important; background: rgba(243, 156, 18, 0.05); }
+#col-szerviz .mid-leader { border-color: #3498db !important; background: rgba(52, 152, 219, 0.05); }
+#col-rfm .mid-leader { border-color: #9b59b6 !important; background: rgba(155, 89, 182, 0.05); }
+#col-integracio .mid-leader { border-color: #2ecc71 !important; background: rgba(46, 204, 113, 0.05); }
+#col-support .mid-leader { border-color: var(--bbox-blue) !important; background: rgba(0, 123, 255, 0.05); }
+
+.pillar-dollak .node:not(.top-leader):not(.mid-leader) { border-bottom: 4px solid var(--bbox-green); }
+.pillar-fabri .node:not(.top-leader):not(.mid-leader) { border-bottom: 4px solid var(--bbox-orange); }
+.pillar-szabo .node:not(.top-leader):not(.mid-leader) { border-bottom: 4px solid var(--bbox-purple); }
+.probation { border-left: 6px solid var(--probation-red) !important; }
+
+.drag-over { background: rgba(0, 123, 255, 0.1) !important; outline: 2px dashed var(--bbox-blue); border-radius: 10px; }
+
+.dollak-tree { display: flex; justify-content: center; gap: 20px; margin-top: 80px; position: relative; }
+.sub-column { display: flex; flex-direction: column; align-items: center; position: relative; min-height: 150px; }
+.dev-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; background: rgba(108, 92, 231, 0.03); padding: 15px; border-radius: 12px; margin-top: 80px; }
+
+.section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+.node.highlight { transform: scale(1.05); border: 2px solid var(--bbox-blue); z-index: 10; box-shadow: 0 0 15px rgba(0,123,255,0.3); }
+.node.fade { opacity: 0.1; filter: blur(1px); }
+/* Modal alapstílus */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 2000; 
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 20px;
+    width: 350px;
+    position: relative;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    text-align: center;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-modal {
+    position: absolute; right: 20px; top: 15px;
+    font-size: 28px; cursor: pointer; color: #aaa;
+}
+
+.modal-profile-img {
+    font-size: 50px; background: #eee;
+    width: 80px; height: 80px; line-height: 80px;
+    border-radius: 50%; margin: 0 auto 15px;
+}
+
+.info-row {
+    text-align: left; margin: 15px 0;
+    padding-bottom: 8px; border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+body.dark-mode .info-row { border-bottom-color: rgba(255,255,255,0.1); }
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 2000; 
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 20px;
+    width: 350px;
+    position: relative;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.close-modal {
+    position: absolute; 
+    right: 20px; 
+    top: 15px;
+    font-size: 28px; 
+    cursor: pointer; 
+    color: #aaa;
+    z-index: 2001; /* Fontos: az ablak felett legyen! */
+}
+
+.close-modal:hover {
+    color: var(--bbox-orange);
+}

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBOX - Szervezeti Hierarchia</title>
+    <!-- Google Fonts és a saját CSS beágyazása -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="header-section">
+        <img src="letöltés.jpg" alt="BBOX Logo" class="logo-image">
+        <input type="text" id="nameSearch" placeholder="Keresés...">
+        <button id="themeToggle" style="margin-top:10px; cursor:pointer;">🌓 Dark Mode</button>
+    </div>
+
+    <div class="org-container" id="mainContainer">
+        <svg id="org-lines-svg"></svg>
+        <div class="node ceo" id="ceo-card" draggable="true"><b>Hódosi Norbert Sándor</b><span>Ügyvezető</span></div>
+
+        <div class="pillars-wrapper">
+            <!-- Dollák Pillar -->
+            <div class="pillar pillar-dollak">
+                <div class="node top-leader" id="dollak-leader" draggable="true"><b>Dollák László</b><span>Gyártásvezető</span></div>
+                <div class="dollak-tree">
+                    <div class="sub-column" data-drop="true" id="col-raktar">
+                        <div class="section-label" style="color:var(--bbox-orange)">Raktár</div>
+                        <div class="node mid-leader" draggable="true"><b>Somlói Tamás</b><span>Anyag beszerző</span></div>
+                        <div class="node" draggable="true"><b>Kósa Attila</b><span>Raktáros</span></div>
+                        <div class="node" draggable="true"><b>Szilágyi Norbert</b><span>Raktáros</span></div>
+                    </div>
+                    <div class="sub-column" data-drop="true" id="col-szerviz">
+                        <div class="section-label" style="color:#3498db">Szerviz</div>
+                        <div class="node mid-leader" draggable="true"><b>Schaller Tamás</b><span>Szerviz műszaki vezető</span></div>
+                        <div class="node" draggable="true"><b>Kádár József</b><span>Szerviz mérnök</span></div>
+                        <div class="node" draggable="true"><b>Babik Olivér</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Kovács Péter Sándor</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Boldog László Attila</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Balog Balázs Zoltán</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Peszteritz Dániel</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Dömök Krisztián</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Lapp Krisztián</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Sörös Richárd</b><span>IT Szerviz-technikus</span></div>
+                        <div class="node" draggable="true"><b>Szőcs József</b><span>IT Szerviz-technikus</span></div>
+                    </div>
+                    <div class="sub-column" data-drop="true" id="col-rfm">
+                        <div class="section-label" style="color:#9b59b6">RFM</div>
+                        <div class="node mid-leader" draggable="true"><b>Pamuki Zsolt</b><span>RFM vezető</span></div>
+                        <div class="node" draggable="true"><b>Losó László</b><span>RFM programozó</span></div>
+                        <div class="node" draggable="true"><b>Kiszely György</b><span>RFM programozó</span></div>
+                        <div class="node" draggable="true"><b>Kovács Levente</b><span>RFM programozó</span></div>
+                    </div>
+                    <div class="sub-column" data-drop="true" id="col-integracio">
+                        <div class="section-label" style="color:#2ecc71">Integráció</div>
+                        <div class="node mid-leader" draggable="true"><b>Elmajer Donát</b><span>Integrátor vezető</span></div>
+                        <div class="node" draggable="true"><b>Szántai Attila</b><span>Integrátor</span></div>
+                        <div class="node" draggable="true"><b>Kovács Dávid</b><span>Rendszerintegrátor</span></div>
+                    </div>
+                    <div class="sub-column" data-drop="true" id="col-support">
+                        <div class="section-label" style="color:var(--bbox-blue)">Support</div>
+                        <div class="node mid-leader" draggable="true"><b>Bende Márk</b><span>HelpDesk vezető</span></div>
+                        <div class="node" draggable="true"><b>Karda Milán</b><span>IT helpdesk</span></div>
+                        <div class="node" draggable="true"><b>Habony Tamás</b><span>IT Helpdesk</span></div>
+                        <div class="node" draggable="true"><b>Huszti Ákos</b><span>IT Helpdesk</span></div>
+                        <div class="node" draggable="true"><b>Rományik Balázs</b><span>IT Helpdesk</span></div>
+                        <div class="node" draggable="true"><b>Vécsei András</b><span>IT Helpdesk</span></div>
+                        <div class="node" draggable="true"><b>Geri Péter</b><span>IT Helpdesk</span></div>
+                        <div class="node" draggable="true"><b>Séra Máté</b><span>IT Helpdesk</span></div>
+                        <div class="node" draggable="true"><b>Pemmer Ferenc</b><span>IT Helpdesk</span></div>
+                        <div class="node probation" draggable="true"><b>Nyíri István</b><span>IT Helpdesk</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fábri Pillar -->
+            <div class="pillar pillar-fabri">
+                <div class="node top-leader" id="fabri-leader" draggable="true"><b>Fábri Olga</b><span>Gazdasági vezető</span></div>
+                <div class="sub-column" data-drop="true" id="col-gazdasag" style="margin-top:45px">
+                    <div class="node" draggable="true"><b>Czita Emőke</b><span>Pénzügyi adminisztrátor</span></div>
+                    <div class="node" draggable="true"><b>Sallai Márta</b><span>Irodavezető</span></div>
+                </div>
+            </div>
+
+            <!-- Szabó Pillar -->
+            <div class="pillar pillar-szabo">
+                <div class="node top-leader" id="szabo-leader" draggable="true"><b>Szabó Attila</b><span>Fejlesztési vezető</span></div>
+                <div class="dev-grid" data-drop="true" id="col-dev">
+                    <div class="node" draggable="true"><b>Illés Zsolt</b><span>Számítás technikai fejlesztő</span></div>
+                    <div class="node" draggable="true"><b>Cseszkó Martin</b><span>IT Support</span></div>
+                    <div class="node" draggable="true"><b>Szabó Gábor K.</b><span>IT Support</span></div>
+                    <div class="node" draggable="true"><b>Szoszin Rudolf A.</b><span>Projektmanedzser</span></div>
+                    <div class="node" draggable="true"><b>Csorba Géza M.</b><span>Fejlesztő</span></div>
+                    <div class="node" draggable="true"><b>Koza Károly Zoltán</b><span>Architekt</span></div>
+                    <div class="node" draggable="true"><b>Bodonyi Gábor</b><span>Fejlesztő</span></div>
+                    <div class="node probation" draggable="true"><b>Czétényi Benjamin</b><span>Szoftverfejlesztő</span></div>
+                    <div class="node probation" draggable="true"><b>Rácz Zoltán V.</b><span>AI fejlesztő</span></div>
+                    <div class="node probation" draggable="true"><b>Sztefanov Ádám</b><span>Android fejlesztő</span></div>
+                    <div class="node" draggable="true"><b>Gudman Roland</b><span>Rendszergazda</span></div>
+                    <div class="node probation" draggable="true"><b>Gazdag Zsombor</b><span>Full Stack</span></div>
+                    <div class="node probation" draggable="true"><b>Gyarmati Dénes</b><span>Full Stack</span></div>
+                    <div class="node probation" draggable="true"><b>Kovács János Z.</b><span>Full Stack</span></div>
+                    <div class="node probation" draggable="true"><b>Tóth Richárd</b><span>Full Stack</span></div>
+                    <div class="node probation" draggable="true"><b>Farkas Gábor</b><span>Full Stack</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal szerkezet -->
+<!-- ... a többi kódod felette ... -->
+    </div> <!-- org-container vége -->
+
+    <!-- 1. IDE TEDD A MODAL-T -->
+    <div id="employeeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <div class="modal-profile-img">👤</div>
+                <h2 id="modalName">Név</h2>
+                <p id="modalPos">Beosztás</p>
+            </div>
+            <div class="modal-body">
+                <div class="info-row"><strong>📧 Email:</strong> <span id="modalEmail"></span></div>
+                <div class="info-row"><strong>📞 Telefon:</strong> <span id="modalPhone"></span></div>
+                <div class="info-row"><strong>🏢 Részleg:</strong> <span id="modalDept"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. A SCRIPT LEGYEN A LEGUTOLSÓ -->
+    <script src="script.js"></script>
+</body>
+</html>
