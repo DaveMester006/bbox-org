@@ -1,0 +1,137 @@
+{
+  "meta": {
+    "validFrom": "2026-05-22",
+    "company": "BBOX"
+  },
+  "ceo": {
+    "id": "ceo",
+    "name": "Hódosi Norbert Sándor",
+    "title": "Ügyvezető",
+    "email": null
+  },
+  "pillars": [
+    {
+      "id": "dollak",
+      "cssClass": "pillar-dollak",
+      "deptLabel": "Gyártás",
+      "leader": {
+        "id": "dollak-leader",
+        "name": "Dollák László",
+        "title": "Gyártásvezető",
+        "email": null
+      },
+      "layout": "columns",
+      "columns": [
+        {
+          "id": "col-raktar",
+          "section": { "label": "Raktár", "color": "var(--bbox-orange)" },
+          "members": [
+            { "id": "somloi-tamas", "name": "Somlói Tamás", "title": "Anyag beszerző", "midLeader": true },
+            { "id": "kosa-attila", "name": "Kósa Attila", "title": "Raktáros" },
+            { "id": "szilagyi-norbert", "name": "Szilágyi Norbert", "title": "Raktáros" }
+          ]
+        },
+        {
+          "id": "col-szerviz",
+          "section": { "label": "Szerviz", "color": "#3498db" },
+          "members": [
+            { "id": "schaller-tamas", "name": "Schaller Tamás", "title": "Szerviz műszaki vezető", "midLeader": true },
+            { "id": "kadar-jozsef", "name": "Kádár József", "title": "Szerviz mérnök" },
+            { "id": "babik-oliver", "name": "Babik Olivér", "title": "IT Szerviz-technikus" },
+            { "id": "kovacs-peter-sandor", "name": "Kovács Péter Sándor", "title": "IT Szerviz-technikus" },
+            { "id": "boldog-laszlo-attila", "name": "Boldog László Attila", "title": "IT Szerviz-technikus" },
+            { "id": "balog-balazs-zoltan", "name": "Balog Balázs Zoltán", "title": "IT Szerviz-technikus" },
+            { "id": "peszteritz-daniel", "name": "Peszteritz Dániel", "title": "IT Szerviz-technikus" },
+            { "id": "domok-krisztian", "name": "Dömök Krisztián", "title": "IT Szerviz-technikus" },
+            { "id": "lapp-krisztian", "name": "Lapp Krisztián", "title": "IT Szerviz-technikus" },
+            { "id": "soros-richard", "name": "Sörös Richárd", "title": "IT Szerviz-technikus" },
+            { "id": "szocs-jozsef", "name": "Szőcs József", "title": "IT Szerviz-technikus" }
+          ]
+        },
+        {
+          "id": "col-rfm",
+          "section": { "label": "RFM", "color": "#9b59b6" },
+          "members": [
+            { "id": "pamuki-zsolt", "name": "Pamuki Zsolt", "title": "RFM vezető", "midLeader": true },
+            { "id": "loso-laszlo", "name": "Losó László", "title": "RFM programozó" },
+            { "id": "kiszely-gyorgy", "name": "Kiszely György", "title": "RFM programozó" },
+            { "id": "kovacs-levente", "name": "Kovács Levente", "title": "RFM programozó" }
+          ]
+        },
+        {
+          "id": "col-integracio",
+          "section": { "label": "Integráció", "color": "#2ecc71" },
+          "members": [
+            { "id": "elmajer-donat", "name": "Elmajer Donát", "title": "Integrátor vezető", "midLeader": true },
+            { "id": "szantai-attila", "name": "Szántai Attila", "title": "Integrátor" },
+            { "id": "kovacs-david", "name": "Kovács Dávid", "title": "Rendszerintegrátor" }
+          ]
+        },
+        {
+          "id": "col-support",
+          "section": { "label": "Support", "color": "var(--bbox-blue)" },
+          "members": [
+            { "id": "bende-mark", "name": "Bende Márk", "title": "HelpDesk vezető", "midLeader": true },
+            { "id": "karda-milan", "name": "Karda Milán", "title": "IT helpdesk" },
+            { "id": "habony-tamas", "name": "Habony Tamás", "title": "IT Helpdesk" },
+            { "id": "huszti-akos", "name": "Huszti Ákos", "title": "IT Helpdesk" },
+            { "id": "romanyik-balazs", "name": "Rományik Balázs", "title": "IT Helpdesk" },
+            { "id": "vecsei-andras", "name": "Vécsei András", "title": "IT Helpdesk" },
+            { "id": "geri-peter", "name": "Geri Péter", "title": "IT Helpdesk" },
+            { "id": "sera-mate", "name": "Séra Máté", "title": "IT Helpdesk" },
+            { "id": "pemmer-ferenc", "name": "Pemmer Ferenc", "title": "IT Helpdesk" },
+            { "id": "nyiri-istvan", "name": "Nyíri István", "title": "IT Helpdesk", "probation": true }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fabri",
+      "cssClass": "pillar-fabri",
+      "deptLabel": "Gazdaság",
+      "leader": {
+        "id": "fabri-leader",
+        "name": "Fábri Olga",
+        "title": "Gazdasági vezető",
+        "email": null
+      },
+      "layout": "simple",
+      "columnId": "col-gazdasag",
+      "members": [
+        { "id": "czita-emoke", "name": "Czita Emőke", "title": "Pénzügyi adminisztrátor" },
+        { "id": "sallai-marta", "name": "Sallai Márta", "title": "Irodavezető" }
+      ]
+    },
+    {
+      "id": "szabo",
+      "cssClass": "pillar-szabo",
+      "deptLabel": "Fejlesztés",
+      "leader": {
+        "id": "szabo-leader",
+        "name": "Szabó Attila",
+        "title": "Fejlesztési vezető",
+        "email": null
+      },
+      "layout": "grid",
+      "columnId": "col-dev",
+      "members": [
+        { "id": "illes-zsolt", "name": "Illés Zsolt", "title": "Számítás technikai fejlesztő" },
+        { "id": "cseszko-martin", "name": "Cseszkó Martin", "title": "IT Support" },
+        { "id": "szabo-gabor-k", "name": "Szabó Gábor K.", "title": "IT Support" },
+        { "id": "szoszin-rudolf-a", "name": "Szoszin Rudolf A.", "title": "Projektmanedzser" },
+        { "id": "csorba-geza-m", "name": "Csorba Géza M.", "title": "Fejlesztő" },
+        { "id": "koza-karoly-zoltan", "name": "Koza Károly Zoltán", "title": "Architekt" },
+        { "id": "bodonyi-gabor", "name": "Bodonyi Gábor", "title": "Fejlesztő" },
+        { "id": "czetenyi-benjamin", "name": "Czétényi Benjamin", "title": "Szoftverfejlesztő", "probation": true },
+        { "id": "racz-zoltan-v", "name": "Rácz Zoltán V.", "title": "AI fejlesztő", "probation": true },
+        { "id": "sztefanov-adam", "name": "Sztefanov Ádám", "title": "Android fejlesztő", "probation": true },
+        { "id": "gudman-roland", "name": "Gudman Roland", "title": "Rendszergazda" },
+        { "id": "gazdag-zsombor", "name": "Gazdag Zsombor", "title": "Full Stack", "probation": true },
+        { "id": "gyarmati-denes", "name": "Gyarmati Dénes", "title": "Full Stack", "probation": true },
+        { "id": "kovacs-janos-z", "name": "Kovács János Z.", "title": "Full Stack", "probation": true },
+        { "id": "toth-richard", "name": "Tóth Richárd", "title": "Full Stack", "probation": true },
+        { "id": "farkas-gabor", "name": "Farkas Gábor", "title": "Full Stack", "probation": true }
+      ]
+    }
+  ]
+}
